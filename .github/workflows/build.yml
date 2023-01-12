@@ -1,0 +1,36 @@
+name: cpp-cmake-mingw-prebuilt-release-actions-workflow
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'c*'
+      
+jobs:
+  build:
+    name: Create Release
+    runs-on: windows-latest
+    env:
+      libraryName: soundtouch
+      cmakeInstallationPath: soundtouch-installation
+      mingwTargetZip: soundtouch-${{ github.ref_name }}-mingw64-x86_64-posix-seh-rev0-8.1.0.zip
+    steps:
+      - name: git clone
+        shell: cmd
+        run: git clone --recursive https://github.com/xoascf/WarpPro.git
+        
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          msbuild-architecture: x64
+          
+      - name: set PATH, check mingw version, cmake generate, build and install
+        shell: cmd
+        run: |
+          cd WarpPro &&^
+          MSBuild.exe WarpPro.sln /p:Configuration=Release /p:Platform="x64"
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: built-binaries
+          path: bin\Debug
