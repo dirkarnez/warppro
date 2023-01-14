@@ -17,10 +17,10 @@ jobs:
       - name: curl dotNetFx45_Full_setup.exe
         shell: cmd
         run: |
-          curl https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe -L --output C:\dotNetFx45_Full_setup.exe
+          curl https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-developer-pack-offline-installer -L --output C:\ndp48-devpack-enu.exe
           
       - shell: pwsh
-        run: Start-Process -FilePath "C:\dotNetFx45_Full_setup.exe" -ArgumentList "/q /norestart" -Wait
+        run: Start-Process -FilePath "C:\ndp48-devpack-enu.exe" -ArgumentList "/q /norestart" -Wait
         
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
