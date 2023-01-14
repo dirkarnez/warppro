@@ -14,6 +14,14 @@ jobs:
         shell: cmd
         run: git clone --recursive https://github.com/xoascf/WarpPro.git
         
+      - name: curl dotNetFx45_Full_setup.exe
+        shell: cmd
+        run: |
+          curl https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe -L --output C:\dotNetFx45_Full_setup.exe
+          
+      - shell: pwsh
+        run: Start-Process -FilePath "C:\dotNetFx45_Full_setup.exe" -ArgumentList "/q /norestart" -Wait
+        
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
         with:
