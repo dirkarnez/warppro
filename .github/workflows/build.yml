@@ -10,30 +10,23 @@ jobs:
       cmakeInstallationPath: soundtouch-installation
       mingwTargetZip: soundtouch-${{ github.ref_name }}-mingw64-x86_64-posix-seh-rev0-8.1.0.zip
     steps:
-      - name: git clone
-        shell: cmd
-        run: git clone --recursive https://github.com/xoascf/WarpPro.git
+      - name: Checkout
+        uses: actions/checkout@v3
         
-      - name: curl dotNetFx45_Full_setup.exe
-        shell: cmd
-        run: |
-          curl https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-developer-pack-offline-installer -L --output C:\ndp48-devpack-enu.exe
-          
-      - shell: pwsh
-        run: Start-Process -FilePath "C:\ndp48-devpack-enu.exe" -ArgumentList "/q /norestart" -Wait
+      - name: Build the Docker image
+        run: docker build --file Dockerfile --tag dirkarnez/msbuild .
         
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          msbuild-architecture: x64
+        #run: docker build . --file Dockerfile --tag auycro/dotnet:$(date +%s)
+        
+      - name: Run the Docker image
+        run: docker run --rm dirkarnez/msbuild --version
           
       - name: set PATH, check mingw version, cmake generate, build and install
         shell: cmd
         run: |
-          cd WarpPro &&^
-          MSBuild.exe WarpPro.sln /p:Configuration=Release /p:Platform="x64"
+          dir
       
       - uses: actions/upload-artifact@v2
         with:
           name: built-binaries
-          path: bin\Debug
+          path: bin/Debug
