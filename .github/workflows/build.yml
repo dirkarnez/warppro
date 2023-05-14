@@ -26,7 +26,7 @@ jobs:
       - name: set PATH, check mingw version, cmake generate, build and install
         shell: cmd
         run: |
-          set PATH=%PATH%;C:\Program Files\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin
+          set PATH=%PATH%;C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\bin
           nuget restore .
           msbuild WarpPro.sln /p:Configuration=Release /p:Platform=x64
           dir /s
