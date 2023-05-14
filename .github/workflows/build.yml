@@ -35,12 +35,12 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
-          directory: "obj/x64/Release/net45"
+          directory: "WarpPro/obj/x64/Release/net45"
           filename: "${{ env.msbuildTargetZip }}"
           
       - name: Release prebuilt
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "obj/x64/Release/net45/${{ env.msbuildTargetZip }}"
+          artifacts: "WarpPro/obj/x64/Release/net45/${{ env.msbuildTargetZip }}"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
