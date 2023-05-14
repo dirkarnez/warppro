@@ -4,7 +4,7 @@ on: [push]
 jobs:
   build:
     name: Create Release
-    runs-on: windows-latest
+    runs-on: windows-2022
     env:
       libraryName: soundtouch
       cmakeInstallationPath: soundtouch-installation
@@ -13,18 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Build the Docker image
-        run: docker build --file Dockerfile --tag dirkarnez/msbuild .
+#       - name: Build the Docker image
+#         run: docker build --file Dockerfile --tag dirkarnez/msbuild .
         
-        #run: docker build . --file Dockerfile --tag auycro/dotnet:$(date +%s)
+#         #run: docker build . --file Dockerfile --tag auycro/dotnet:$(date +%s)
         
-      - name: Run the Docker image
-        run: docker run --rm dirkarnez/msbuild --version
+#       - name: Run the Docker image
+#         run: docker run --rm dirkarnez/msbuild --version
           
       - name: set PATH, check mingw version, cmake generate, build and install
         shell: cmd
         run: |
-          dir
+          nuget restore .
+          msbuild WarpPro.sln /p:Configuration=Release /p:Platform=x64
+          dir /s
       
       - uses: actions/upload-artifact@v2
         with:
